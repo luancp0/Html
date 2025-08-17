@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Phân tích logic – Free Fire</title>
+  <style>
+    :root{
+      --bg:#0f1115;
+      --card:#171923;
+      --soft:#202433;
+      --text:#e6e6ea;
+      --muted:#9aa3b2;
+      --accent:#6ee7b7;
+      --shadow: 0 8px 24px rgba(0,0,0,.35);
+      --radius:18px;
+      --radius-sm:12px;
+      --gap:20px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:radial-gradient(80vw 60vh at 70% -10%, #1d2230 10%, #0f1115 60%), var(--bg);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      line-height:1.6;
+      padding:24px;
+    }
+    .container{
+      max-width:980px;
+      margin:0 auto;
+    }
+    .card{
+      background:linear-gradient(180deg, var(--card), var(--soft));
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .header{
+      padding:28px 28px 10px;
+    }
+    h1{
+      margin:0 0 4px;
+      font-size:clamp(22px, 3.2vw, 30px);
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .media{
+      position:relative;
+      margin: 20px;
+      border-radius:var(--radius-sm);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      background:#0b0d13;
+      aspect-ratio: 16 / 9;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .caption{
+      position:absolute;
+      left:12px; bottom:12px;
+      background:rgba(0,0,0,.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      padding:6px 10px;
+      border-radius:10px;
+      font-size:12px;
+      color:#d7e0ea;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .content{
+      padding:0 28px 26px;
+    }
+    .content p{margin:.4rem 0}
+    .content .lead{
+      font-size:1.02rem;
+    }
+    .block{
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:12px;
+      padding:14px 16px;
+      margin:14px 0;
+    }
+    .callout{
+      border-left:4px solid var(--accent);
+      background:linear-gradient(90deg, rgba(110,231,183,.08), rgba(110,231,183,0));
+      padding:12px 14px;
+      border-radius:10px;
+      margin:16px 0;
+    }
+    ul{
+      margin:8px 0 8px 20px;
+    }
+    code{background:rgba(255,255,255,.08); padding:1px 6px; border-radius:6px}
+    .footer{color:var(--muted); font-size:12px; text-align:center; padding:12px}
+    @media (max-width:600px){
+      .media{ margin:14px; }
+      .content{ padding:0 18px 20px; }
+      .header{ padding:20px 18px 6px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <article class="card">
+      <header class="header">
+        <h1>Phân tích logic custom mode – Free Fire</h1>
+        <p class="sub">Ảnh minh họa (ảnh #2) nằm trong khung bên dưới</p>
+      </header>
+
+      <!-- Ảnh #2 trong khung chứa -->
+      <figure class="media">
+        <img
+          src="https://i.postimg.cc/Kv22Pvj6/IMG-20250817-175301-617.jpg"
+          alt="Ảnh 2: khối lệnh Free Fire - Khi đội bị tiêu diệt hoàn toàn"
+          loading="lazy"
+        />
+        <figcaption class="caption">Ảnh #2 – Khối lệnh kiểm tra Objective</figcaption>
+      </figure>
+
+      <div class="content">
+        <p class="lead">
+          Mình xem kỹ các ảnh bạn gửi, đây là logic custom mode trong Free Fire (Tập lệnh khối).
+          Bạn gặp tình huống cứ đến <strong>round 4</strong> là tự kết thúc, trong khi bạn muốn <strong>Mục tiêu = 8 màn</strong>.
+        </p>
+
+        <div class="block">
+          <p><strong>Nguyên nhân nằm ở đoạn code trong ảnh số 2:</strong></p>
+          <p><em>--// Đây sẽ là nơi chứa ảnh 2</em></p>
+          <p>Trong khối <code>"Khi đội bị tiêu diệt hoàn toàn"</code> → có đoạn:</p>
+          <p><code>Nếu scoreT1 = Objective hoặc scoreT2 = Objective → thì kết thúc giai đoạn hiện tại.</code></p>
+        </div>
+
+        <div class="callout">
+          <p><strong>👉 Nghĩa là:</strong></p>
+          <ul>
+            <li>Bạn đang đặt <strong>Objective = 8</strong>, nhưng thực tế <code>scoreT1</code> / <code>scoreT2</code> tăng sai hoặc chưa được reset.</li>
+            <li>Khi hết 3 round đầu, tổng điểm đội đã chạm điều kiện (bằng Objective hoặc bị hiểu nhầm thành đạt Objective) → game tự kết thúc vòng đấu.</li>
+          </ul>
+        </div>
+
+        <h3>Vì sao nó dừng ở round 4?</h3>
+        <ul>
+          <li>Ở round 1 → <code>scoreT1/scoreT2 = 1</code>.</li>
+          <li>Round 2 → <code>scoreT1/scoreT2 = 2</code>.</li>
+          <li>Round 3 → <code>scoreT1/scoreT2 = 3</code>.</li>
+          <li>Đến round 4, hệ thống kiểm tra điều kiện Objective (bạn đặt là 8).<br />
+              Nhưng code đang set Objective mặc định = 3 hoặc 4 ở một chỗ khác (ảnh số 2 dòng
+              <em>"Thiết lập Objective = 8"</em> chỉ chạy lúc tạo thực thể, nhưng sau đó lại có chỗ ghi đè). → Thành ra game hiểu rằng đã đạt mục tiêu → tự end.</li>
+        </ul>
+
+        <h3>Cách khắc phục</h3>
+        <ul>
+          <li>Kiểm tra lại đoạn <strong>Thiết lập Objective Vận hành = 8</strong> — đảm bảo chỉ chạy một lần lúc khởi tạo và không bị thay đổi ở chỗ khác.</li>
+          <li>Ở phần kiểm tra thắng thua: thay <code>Nếu scoreT1 = Objective hoặc scoreT2 = Objective</code>
+              → thành <code>Nếu scoreT1 &gt;= Objective hoặc scoreT2 &gt;= Objective</code> (tránh so sánh sai hoặc reset sai).</li>
+          <li>Đảm bảo biến <code>scoreT1</code>, <code>scoreT2</code> tăng đúng theo round (không bị +2, +3 ngoài ý muốn).</li>
+          <li>Debug bằng cách in thông báo sau mỗi round:
+            <code>Điểm team1 = {scoreT1}, team2 = {scoreT2}, Objective = {Objective}</code> để xem giá trị thực.</li>
+        </ul>
+
+        <div class="callout">
+          <p><strong>👉 Tóm lại:</strong> Game kết thúc ở round 4 vì điều kiện Objective bị set sai hoặc bị ghi đè, dẫn đến hiểu nhầm là đã đạt đủ màn thắng.</p>
+        </div>
+      </div>
+
+      <div class="footer">© Bản trình bày minh họa – có thể nhúng trực tiếp vào web/app</div>
+    </article>
+  </div>
+</body>
+</html>
